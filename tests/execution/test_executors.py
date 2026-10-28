@@ -290,7 +290,9 @@ def test_end_to_end_parallelizable_with_overrides_on_collect_node():
     "TODO -- actually measure the memory allocated/remaining",
 )
 def test_sequential_would_use_too_much_memory_no_garbage_collector():
-    NUM_REPS = 1000
+    # 50 x ~0.86 GB = ~43 GB: well above a CI runner's RAM, so a leak still fails,
+    # without allocating ~860 GB serially on every matrix leg.
+    NUM_REPS = 50
 
     def foo() -> Parallelizable[int]:
         for i in range(NUM_REPS):
